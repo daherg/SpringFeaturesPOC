@@ -1,0 +1,159 @@
+version: "3"
+services:
+  service-addressbook:
+    env_file:
+      - ./env_variables
+    build:
+      context: ./service-addressbook
+      dockerfile: Dockerfile
+    depends_on:
+      - service-eureka
+    ports:
+      - "8762:8762"
+    volumes:
+      - /home/docker/logs/service-addressbook:/logs
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  service-eureka:
+    env_file:
+      - ./env_variables
+    build:
+      context: ./service-eureka
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+    volumes:
+      - /home/docker/logs/service-eureka:/logs
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  service-client:
+    env_file:
+      - ./env_variables
+    build:
+      context: ./service-client
+      dockerfile: Dockerfile
+    depends_on:
+      - service-eureka
+    ports:
+      - "8764:8764"
+    volumes:
+      - /home/docker/logs/service-client:/logs
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  service-gateway:
+    env_file:
+      - ./env_variables
+    build:
+      context: ./service-gateway
+      dockerfile: Dockerfile
+    depends_on:
+      - service-eureka
+    ports:
+      - "8765:8765"
+    volumes:
+      - /home/docker/logs/service-gateway:/logs
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  service-hystrix:
+    env_file:
+      - ./env_variables
+    build:
+      context: ./service-hystrix
+      dockerfile: Dockerfile
+    depends_on:
+      - service-eureka
+    ports:
+      - "8768:8768"
+    volumes:
+      - /home/docker/logs/service-hystrix:/logs
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  service-monitor:
+    env_file:
+      - ./env_variables
+    build:
+      context: ./service-monitor
+      dockerfile: Dockerfile
+    depends_on:
+      - service-eureka
+    ports:
+      - "8766:8766"
+    volumes:
+      - /home/docker/logs/service-monitor:/logs
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  service-people:
+    env_file:
+      - ./env_variables
+    build:
+      context: ./service-people
+      dockerfile: Dockerfile
+    depends_on:
+      - service-eureka
+    ports:
+      - "8767:8767"
+    volumes:
+      - /home/docker/logs/service-people:/logs
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  service-zipkin:
+    env_file:
+      - ./env_variables
+    build:
+      context: ./service-zipkin
+      dockerfile: Dockerfile
+    depends_on:
+      - service-eureka
+    ports:
+      - "9411:9411"
+    volumes:
+      - /home/docker/logs/service-zipkin:/logs
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
