@@ -18,10 +18,22 @@ The repository contains the following micro services.
 ## Preparation
 Please install the following programs on your local machine:
 * The newest version of git ([https://git-scm.com](https://git-scm.com))
-* The newest version of maven ([https://maven.apache.org](https://maven.apache.org))
+* The newest version of maven ([https://maven.apache.org](https://maven.apache.org)
+* Download docker toolbox for windows: https://download.docker.com/win/stable/DockerToolbox.exe
 
-## Start Order
-Please start the micro service in the following order to avoid strange behavior.
+## Starting
+There are three ways to start this spring feature poc. 
+* manual via maven
+* automatically via maven
+* automatically in an docker environment
+
+### Manual via maven
+After cloning the complete repository to your local computer change to the subfolder and start each micro service with
+maven:
+```
+mvn spring-boot:run
+```
+Please be sure to start the services in this order:
 1. service-eureka
 2. service-zipkin
 3. service-gateway
@@ -31,17 +43,20 @@ Please start the micro service in the following order to avoid strange behavior.
 7. service-people
 8. service-client
 
-## Build
-After cloning the complete repository to your local computer change to the subfolder and start each micro service with
-maven:
+### Automatically via maven
+To start all the services via the shell-script, type the following command:
 ```
-mvn spring-boot:run
+.\build-local.sh
 ```
 
-## Architecture
-![Architecture](https://github.com/Alienuser/Spring-Features/blob/master/architecture.png "Architecture")
+### Automatically in docker
+To start all the services in an docker environment, type the following command:
+```
+.\build-docker.sh
+``` 
 
 ## Description of each micro services
+If you start the services in an docker environment, make sure that the ip is not 127.0.0.1 but 192.168.99.100.
 
 ### Service Addressbook (:8762)
 The Addressbook service creates an address book with people in it. The amount of people can be defined as an url 
@@ -112,8 +127,3 @@ This service starts an Spring Zipkin server. With this you can trace all request
 #### Endpoints
 * Service-Request: [http://127.0.0.1:9411](http://127.0.0.1:9411)
 * Info: [http://127.0.0.1:9411/info](http://127.0.0.1:9411/info)
-
-
-### TODO
-docker run -d -p 3000:3000 -p 8070:80 -p 8768:8768 -p 8125:8125 --name=grafana grafana/grafana
-Do not have a VPN connection!!
